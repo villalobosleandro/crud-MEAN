@@ -25,25 +25,25 @@ userCtrl.getUser = async (req, res) => {
 userCtrl.createUser = async (req, res) => {
   const userExist = User.find(
     { $or: [{ email: req.body.email }, { cedula: req.body.cedula }] },
-      function(err, docs) {
-        if (docs.length) {
-          return res.status(500).send('The email or DNI exists!')
+    function (err, docs) {
+      if (docs.length) {
+        return res.status(500).send('The email or DNI exists!')
       } else {
         const regex = /^[0-9]*$/;
-        const onlyNumbersDni = regex.test(req.body.cedula); 
+        const onlyNumbersDni = regex.test(req.body.cedula);
         const onlyNumbersPhone = regex.test(req.body.telefono);
-        if(!onlyNumbersDni || !onlyNumbersPhone) {
+        if (!onlyNumbersDni || !onlyNumbersPhone) {
           return res.status(400).send('DNI or phone they can only be numbers!')
         }
 
-        if(req.body.nombre === '' ||
+        if (req.body.nombre === '' ||
           req.body.apellido === '' ||
           req.body.cedula === '' ||
           req.body.email === ''
         ) {
           return res.status(400).send('Invalid fields!')
         }
-        
+
         let user = new User({
           nombre: req.body.nombre,
           email: req.body.email,
@@ -52,10 +52,10 @@ userCtrl.createUser = async (req, res) => {
           telefono: req.body.telefono
         })
         user = user.save();
-      
+
         if (!user)
           return res.status(400).send('the user cannot be created!')
-      
+
         res.send(user);
       }
     }
@@ -65,14 +65,6 @@ userCtrl.createUser = async (req, res) => {
 
 //editar un usuario
 userCtrl.editUser = async (req, res) => {
-  const userExist = await User.findById(req.params.id);
-  // let newPassword
-  // if (req.body.password) {
-  //     newPassword = bcrypt.hashSync(req.body.password, 10)
-  // } else {
-  //     newPassword = userExist.passwordHash;
-  // }
-
   const user = await User.findByIdAndUpdate(
     req.params.id,
     {
@@ -86,7 +78,7 @@ userCtrl.editUser = async (req, res) => {
   )
 
   if (!user)
-    return res.status(400).send('the user cannot be edited!')
+    return res.status(400).send('The user cannot be edited!')
 
   res.send(user);
 }

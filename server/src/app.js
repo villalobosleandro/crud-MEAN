@@ -38,6 +38,6 @@ mongoose.connect(process.env.MONGO_DB_URL || 'mongodb://localhost/MEAN-user', {
   console.log(error);
 })
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('server is running http://localhost:3000');
+app.listen(process.env.PORT || 3030, () => {
+  console.log('server is running http://localhost:3030');
 });
